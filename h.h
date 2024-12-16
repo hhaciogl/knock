@@ -49,10 +49,10 @@ static int fail = 0;
   }                                                                     \
   return (fail);                                                        \
   } while(0)
-# define diag(fmt, ...) do { \
-  if (LOG == 1) \
-    printf("# " fmt "\n", __VA_ARGS__); \
-  else \
-    (void)0; \
+# define diag(fmt, ...) do {                                            \
+  if (LOG == 1)                                                         \
+    printf("# " fmt "\n", __VA_ARGS__);                                 \
+  else                                                                  \
+    (void)0;                                                            \
   } while(0)
 #endif
