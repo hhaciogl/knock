@@ -1,7 +1,7 @@
-/* knock.h -- simplistic Knock generator.  */
+/* TAP inspired macros  */
 
-#ifndef HEADER_KNOCK_H
-#define HEADER_KNOCK_H
+#ifndef H_H
+#define H_H
 #ifndef LOG
 # define LOG 1
 #endif
@@ -55,4 +55,4 @@ static int fail = 0;
   else \
     (void)0; \
   } while(0)
-#endif /* !defined HEADER_KNOCK_H */
+#endif

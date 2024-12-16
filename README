@@ -1,10 +1,24 @@
-Knock is a simplification of the Test Anything Protocol used by Perl and others.
+h is a simple [TAP](https://testanything.org/) inspired macros collection
 
-Every test suite is a script that prints lines looking like:
+MACROs
+-------
+ok(expr, ...) 
+Takes an expression if fails increase fail count and prints a not ok
+if it passes prints ok and message if any
 
-  ok ...        for a passed test
-  not ok ...    for a failed test
-  # ...         for diagnostics
+fails(...)
+Fails directly and increase fail count and prints message. Good for 
+pending implementations
 
-Everything else is ignored.  Scripts should exit with 0 when they ran
-all tests and non-0 when there was a fatal error.
+pass(...)
+Pass directly and prints any messages if any
+
+diag(fmt, ...)
+Helps to print diagnostics if you want any can be disaled by #define LOG 0
+
+exit_status()
+Exit with amount of fail tests it is good if you use a CI tool.
+
+USAGE
+--------
+Add h.h to your source file and compile.
