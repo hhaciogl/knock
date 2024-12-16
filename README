@@ -1,4 +1,4 @@
-h is a simple [TAP](https://testanything.org/) inspired macros collection
+h is a simple TAP (https://testanything.org/) inspired macros collection
 
 MACROs
 -------
@@ -14,11 +14,13 @@ pass(...)
 Pass directly and prints any messages if any
 
 diag(fmt, ...)
-Helps to print diagnostics if you want any can be disaled by #define LOG 0
+Helps to print diagnostics and can be disaled by #define LOG 0
 
 exit_status()
-Exit with amount of fail tests it is good if you use a CI tool.
+Exit with amount of fail tests or 0 if no failure.
 
 USAGE
 --------
 Add h.h to your source file and compile.
+
+Forked from https://github.com/leahneukirchen/knock
