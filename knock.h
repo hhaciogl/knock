@@ -3,11 +3,11 @@
 #ifndef HEADER_KNOCK_H
 #define HEADER_KNOCK_H
 
-#define KNOCK_VERSION "0.1"
 
 #include <stdio.h>
 #include <stdlib.h>
 
+static fail = 0;
 #define ok(expr, ...)                                                   \
   do {                                                                  \
     if (expr)                                                           \
@@ -19,6 +19,7 @@
       }                                                                 \
     else                                                                \
       {                                                                 \
+        fail = 1;                                                       \
         if (#__VA_ARGS__[0])                                            \
           printf ("not ok - %s:%d: (%s) %s failed - %s\n",              \
                   __FILE__, __LINE__, __FUNCTION__, # expr, "" __VA_ARGS__); \
@@ -28,52 +29,9 @@
       }                                                                 \
   } while(0)
 
-#define is_num(got, expected, ...)                                          \
-  do {                                                                  \
-    long _got = (got);                                                  \
-    long _expected = (expected);                                        \
-    if (_expected == _got)                                              \
-      {                                                                 \
-        if (#__VA_ARGS__[0])                                            \
-          printf ("ok - %s\n", "" __VA_ARGS__);                         \
-        else                                                            \
-          printf ("ok\n");                                              \
-      }                                                                 \
-    else                                                                \
-      {                                                                 \
-        if (#__VA_ARGS__[0])                                            \
-          printf ("not ok - %s:%d: (%s) %s(%ld, %p) != %s - %s\n",      \
-                  __FILE__, __LINE__, __FUNCTION__,                     \
-                  # got, _got, (void*) _got, # expected, "" __VA_ARGS__ ); \
-        else                                                            \
-          printf ("not ok - %s:%d: (%s) %s(%ld, %p) != %s\n",           \
-                  __FILE__, __LINE__, __FUNCTION__,                     \
-                  # got, _got, (void*) _got, # expected);               \
-      }                                                                 \
-  } while(0)
-
-#define is_str(got, expected, ...)                                          \
-  do {                                                                  \                                        \
-    if ((cmp(_expected, _got) == 0))                                              \
-      {                                                                 \
-        if (#__VA_ARGS__[0])                                            \
-          printf ("ok - %s\n", "" __VA_ARGS__);                         \
-        else                                                            \
-          printf ("ok\n");                                              \
-      }                                                                 \
-    else                                                                \
-      {                                                                 \
-        if (#__VA_ARGS__[0])                                            \
-          printf ("not ok - %s:%d: (%s) %s(%s, %p) not equal to %s - %s\n",      \
-                  __FILE__, __LINE__, __FUNCTION__, # got, _got, (void*) _got, # expected, "" __VA_ARGS__ ); \
-        else                                                            \
-          printf ("not ok - %s:%d: (%s) %s(%s, %p) != %s\n",           \
-                  __FILE__, __LINE__, __FUNCTION__,                     \
-                  # got, _got, (void*) _got, # expected);               \
-      }                                                                 \
-  } while(0)
 #define fail(...)                                                       \
-  do {                                                                  \
+  do {                                                                   \  
+    fail = 1;                                                               \
     if (#__VA_ARGS__[0])                                                \
       printf ("not ok - %s:%d (%s) - %s\n",                             \
               __FILE__, __LINE__, __FUNCTION__, "" __VA_ARGS__);        \
@@ -83,7 +41,6 @@
   } while(0)
 
 #define pass(...)  do { ok(1, __VA_ARGS__); } while(0)
-
 #define diag(fmt, args...)  do { printf ("# " fmt "\n" , ##args); } while(0)
-
+#define exit_status() do { fail == 0 ? return (0); : return (1); } while(0)
 #endif /* !defined HEADER_KNOCK_H */
