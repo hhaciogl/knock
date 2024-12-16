@@ -2,12 +2,13 @@
 
 #ifndef HEADER_KNOCK_H
 #define HEADER_KNOCK_H
-
-
+#ifndef LOG
+# define LOG 1
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 
-static fail = 0;
+static int fail = 0;
 #define ok(expr, ...)                                                   \
   do {                                                                  \
     if (expr)                                                           \
@@ -19,7 +20,7 @@ static fail = 0;
       }                                                                 \
     else                                                                \
       {                                                                 \
-        fail = 1;                                                       \
+        fail++;                                                         \
         if (#__VA_ARGS__[0])                                            \
           printf ("not ok - %s:%d: (%s) %s failed - %s\n",              \
                   __FILE__, __LINE__, __FUNCTION__, # expr, "" __VA_ARGS__); \
@@ -30,8 +31,8 @@ static fail = 0;
   } while(0)
 
 #define fail(...)                                                       \
-  do {                                                                   \  
-    fail = 1;                                                               \
+  do {                                                                  \
+    fail++;                                                           \
     if (#__VA_ARGS__[0])                                                \
       printf ("not ok - %s:%d (%s) - %s\n",                             \
               __FILE__, __LINE__, __FUNCTION__, "" __VA_ARGS__);        \
@@ -41,6 +42,17 @@ static fail = 0;
   } while(0)
 
 #define pass(...)  do { ok(1, __VA_ARGS__); } while(0)
-#define diag(fmt, args...)  do { printf ("# " fmt "\n" , ##args); } while(0)
-#define exit_status() do { fail == 0 ? return (0); : return (1); } while(0)
+#define exit_status() do {                                              \
+  if (fail == 0)                                                        \
+  {                                                                     \
+    return (0);                                                         \
+  }                                                                     \
+  return (fail);                                                        \
+  } while(0)
+# define diag(fmt, ...) do { \
+  if (LOG == 1) \
+    printf("# " fmt "\n", __VA_ARGS__); \
+  else \
+    (void)0; \
+  } while(0)
 #endif /* !defined HEADER_KNOCK_H */
