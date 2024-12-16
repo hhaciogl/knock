@@ -28,7 +28,7 @@
       }                                                                 \
   } while(0)
 
-#define is(got, expected, ...)                                          \
+#define is_num(got, expected, ...)                                          \
   do {                                                                  \
     long _got = (got);                                                  \
     long _expected = (expected);                                        \
@@ -52,6 +52,26 @@
       }                                                                 \
   } while(0)
 
+#define is_str(got, expected, ...)                                          \
+  do {                                                                  \                                        \
+    if ((cmp(_expected, _got) == 0))                                              \
+      {                                                                 \
+        if (#__VA_ARGS__[0])                                            \
+          printf ("ok - %s\n", "" __VA_ARGS__);                         \
+        else                                                            \
+          printf ("ok\n");                                              \
+      }                                                                 \
+    else                                                                \
+      {                                                                 \
+        if (#__VA_ARGS__[0])                                            \
+          printf ("not ok - %s:%d: (%s) %s(%s, %p) not equal to %s - %s\n",      \
+                  __FILE__, __LINE__, __FUNCTION__, # got, _got, (void*) _got, # expected, "" __VA_ARGS__ ); \
+        else                                                            \
+          printf ("not ok - %s:%d: (%s) %s(%s, %p) != %s\n",           \
+                  __FILE__, __LINE__, __FUNCTION__,                     \
+                  # got, _got, (void*) _got, # expected);               \
+      }                                                                 \
+  } while(0)
 #define fail(...)                                                       \
   do {                                                                  \
     if (#__VA_ARGS__[0])                                                \
